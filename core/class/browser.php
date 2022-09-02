@@ -93,7 +93,7 @@ class browser extends uploader {
                 $this->backMsg($message);
             else {
                 header("Content-Type: text/plain; charset={$this->charset}");
-                die(json_encode(array('error' => $message)));
+                throw new \Exception(json_encode(array('error' => $message)));
             }
         }
 
@@ -874,12 +874,12 @@ class browser extends uploader {
 
     protected function errorMsg($message, array $data=null) {
         if (in_array($this->action, array("thumb", "upload", "download", "downloadDir")))
-            die($this->label($message, $data));
+            throw new \Exception($this->label($message, $data));
         if (($this->action === null) || ($this->action == "browser"))
             $this->backMsg($message, $data);
         else {
             $message = $this->label($message, $data);
-            die(json_encode(array('error' => $message)));
+            throw new \Exception(json_encode(array('error' => $message)));
         }
     }
 

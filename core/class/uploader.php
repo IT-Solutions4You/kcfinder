@@ -17,7 +17,7 @@ namespace kcfinder;
 class uploader {
 
 /** Release version */
-    const VERSION = "3.20-test2";
+    const VERSION = "3.3 IT-Solutions4You";
 
 /** Config session-overrided settings
   * @var array */
@@ -527,8 +527,9 @@ class uploader {
             $img = $image;
 
         $orientation = 1;
-        if (function_exists("exif_read_data")) {
-            $orientation = @exif_read_data($file);
+
+        if (function_exists('exif_read_data') && function_exists('exif_imagetype') && IMAGETYPE_JPEG === exif_imagetype($file)) {
+            $orientation = exif_read_data($file);
             $orientation = isset($orientation['Orientation']) ? $orientation['Orientation'] : 1;
         }
 
@@ -690,7 +691,7 @@ class uploader {
                 @unlink($tmp_name);
         }
         $this->callBack("", $message);
-        die;
+        throw new \Exception($message);
     }
 
     protected function callBack($url, $message="") {
